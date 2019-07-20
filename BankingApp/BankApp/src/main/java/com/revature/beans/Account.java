@@ -11,6 +11,12 @@ public class Account {
 	boolean isJoint;
 	boolean isApproved;
 	
+	public Account (ArrayList<User>User, float CurrentBalance, boolean isJoint, boolean isApproved) {
+		this.User=User;
+		this.CurrentBalance=CurrentBalance;
+		this.isJoint=isJoint;
+		this.isApproved=isApproved;
+	}
 	
 	
 }
