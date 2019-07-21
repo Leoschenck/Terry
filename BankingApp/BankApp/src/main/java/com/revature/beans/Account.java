@@ -10,12 +10,12 @@ public class Account {
 	float CurrentBalance;
 	boolean isJoint;
 	boolean isApproved;
-	
-	public Account (ArrayList<User>User, float CurrentBalance, boolean isJoint, boolean isApproved) {
-		this.User=User;
-		this.CurrentBalance=CurrentBalance;
-		this.isJoint=isJoint;
-		this.isApproved=isApproved;
+
+	public Account(ArrayList<User> User, float CurrentBalance, boolean isJoint, boolean isApproved) {
+		this.User = User;
+		this.CurrentBalance = CurrentBalance;
+		this.isJoint = isJoint;
+		this.isApproved = isApproved;
 	}
 
 	public ArrayList<User> getUser() {
@@ -52,11 +52,9 @@ public class Account {
 
 	@Override
 	public String toString() {
-		return "Account [User=" + User + ", CurrentBalance=" + CurrentBalance + ", isJoint=" + isJoint + ", isApproved="
-				+ isApproved + "]";
+		return "Account [User=" + User + ", CurrentBalance=" + CurrentBalance + 
+				", isJoint=" + isJoint;
+
 	}
-	
-	
-	
-	
+
 }
