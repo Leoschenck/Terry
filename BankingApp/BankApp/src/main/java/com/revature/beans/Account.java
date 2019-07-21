@@ -52,8 +52,9 @@ public class Account {
 
 	@Override
 	public String toString() {
-		return "Account [User=" + User + ", CurrentBalance=" + CurrentBalance + ", isJoint=" + isJoint + ", isApproved="
-				+ isApproved + "]";
+		return "Account [User=" + User + ", CurrentBalance=" + CurrentBalance + 
+				", isJoint=" + isJoint;
+
 	}
 
 }
