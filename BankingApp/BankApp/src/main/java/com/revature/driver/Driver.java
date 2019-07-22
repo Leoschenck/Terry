@@ -65,9 +65,9 @@ public class Driver {
 		User terry = new User("Terry", "kittycat", 0);
 		User leo = new User("Leo", "doggobark", 0);
 		User mett = new User("Matt", "RollTide", 1);
-		User BASTET = new User("BASTET", "lifat almada", 2);
+		User bASTET = new User("BASTET", "lifat almada", 2);
 		
-		User[] userArray = new User[] { terry, leo, mett };
+		User[] userArray = new User[] { terry, leo, mett, bASTET };
 		users.addAll(Arrays.asList(userArray));
 	}
 	/*

@@ -1,8 +1,9 @@
 package com.revature.beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
 
 	// person has String name, ArrayList<Account> accounts, String password, int
 	// role,
