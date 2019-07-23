@@ -38,10 +38,11 @@ public class Driver {
 			System.out.println(
 					"Your Account application was submitted and if accepted, you'll be able to deposit money on it!");
 			View.accountsView();
-		}else if(input < Account.getAccountCount()) {
-		System.out.println("You applied for a Joint Account with " + accounts.get(input).getUsers().toArray()[0] + ".");
-		accounts.get(input).addUser(currentlyLoggedInUser);
-		View.accountsView();
+		} else if (input < Account.getAccountCount()) {
+			System.out.println(
+					"You applied for a Joint Account with " + accounts.get(input).getUsers().toArray()[0] + ".");
+			accounts.get(input).addUser(currentlyLoggedInUser);
+			View.accountsView();
 		}
 	}
 
@@ -54,20 +55,24 @@ public class Driver {
 		}
 		return userAccounts;
 	}
+
 	public static void acceptApplication(int input, User user) {
 		accounts.get(input).setApproval(user);
 	}
+
 	public static void rejectApplication(int input, User user) {
 		accounts.get(input).rejectApplication(user);
 	}
+
 	public static User findUser(String name) {
-		for(User user : users) {
-			if(user.getName().equals(name)) {
+		for (User user : users) {
+			if (user.getName().equals(name)) {
 				return user;
 			}
 		}
 		return null;
 	}
+
 	public static String getCurrentUserName() {
 		if (currentlyLoggedInUser == null)
 			return "";
@@ -83,13 +88,16 @@ public class Driver {
 	public static int getAccountCount() {
 		return Account.getAccountCount();
 	}
-	public static ArrayList<User> getUsers(){
+
+	public static ArrayList<User> getUsers() {
 		return users;
 	}
+
 	public static Account getAccount(int x) {
 		return accounts.get(x);
 	}
-	public static Collection<Account> getAccounts(){
+
+	public static Collection<Account> getAccounts() {
 		return accounts.values();
 	}
 
@@ -101,7 +109,7 @@ public class Driver {
 					currentlyLoggedInUser = user;
 					if (user.getRole() == 0)
 						View.customerView();
-					if (user.getRole()==1)
+					if (user.getRole() >= 1)
 						View.employeeView();
 				}
 				System.out.println(
@@ -114,8 +122,9 @@ public class Driver {
 		View.loginView();
 
 	}
+
 	public static boolean isAdmin() {
-		return (currentlyLoggedInUser.getRole()==2);
+		return (currentlyLoggedInUser.getRole() == 2);
 	}
 
 	public static void registerUser(String userName, String password) {
@@ -154,41 +163,71 @@ public class Driver {
 	 * MainFunctions: Login, Register UserFunctions:
 	 */
 
-	public static double deposit(double x) {
+	public static void deposit(double depositAmount, int accountNumber) {
 
-		double input = x;
-		double balance = 2000.00; // replace with a variable
-		double depositAmount = x;
-		double updateBalance = balance + depositAmount;
-		System.out.println("Current balance is " + updateBalance);
-		return updateBalance;
-	}
-
-	public static double withdraw(double x) {
-
-		double input = x;
-		double balance = 2000.00; // replace with a variable
-		double withdrawAmount = x;
-		double updateBalance = balance + withdrawAmount;
-		System.out.println("Current balance is " + updateBalance);
-		return updateBalance;
-	}
-
-	public static double transfer(double x) {
-		double input = x;
-		double balance = 2000.00;
-		double transferAmount = x;
-		double updateBalance = balance + transferAmount;
-		if (x <= balance) {
-			withdraw(x);
-			deposit(x); //need to use bank account to call this method
-			System.out.println("Successfully transferred $" + input + ". Your currenct balance is $" + updateBalance);
-			return updateBalance;
-
+		double balance = accounts.get(accountNumber).getCurrentBalance(); // replace with a variable
+		if (depositAmount < 0) {
+			System.out.println("u stuped??");
+			View.depositView();
 		}
-		System.out.println(" Transfer failed, not enough balance. >_<" + "Your current balance is $" + balance);
+		accounts.get(accountNumber).setCurrentBalance(balance + depositAmount);
+		System.out.println("Current balance is " + accounts.get(accountNumber).getCurrentBalance());
+		View.customerView();
+	}
 
-		return balance;
+	public static void depositForTrans(double depositAmount, int accountNumber) {
 
+		double balance = accounts.get(accountNumber).getCurrentBalance(); // replace with a variable
+		if (depositAmount < 0) {
+			System.out.println("u stuped??");
+			View.depositView();
+		}
+		accounts.get(accountNumber).setCurrentBalance(balance + depositAmount);
+		System.out.println("Current balance is " + accounts.get(accountNumber).getCurrentBalance());
+	}
+
+	public static void withdraw(double withdrawAmount, int accountNumber) {
+
+		double balance = accounts.get(accountNumber).getCurrentBalance(); // replace with a variable
+		if (withdrawAmount < 0) {
+			System.out.println("sorry, no moneyprinting!");
+			withdrawAmount = 0;
+		} else if (withdrawAmount > accounts.get(accountNumber).getCurrentBalance()) {
+			System.out.println("Nice try, but we are credit sharks and not baitfishes!");
+			withdrawAmount = 0;
+		}
+		accounts.get(accountNumber).setCurrentBalance(balance - withdrawAmount);
+		System.out.println("Current balance is " + accounts.get(accountNumber).getCurrentBalance());
+		View.customerView();
+	}
+
+	public static boolean withdrawForTrans(double withdrawAmount, int accountNumber) {
+
+		double balance = accounts.get(accountNumber).getCurrentBalance(); // replace with a variable
+		if (withdrawAmount < 0) {
+			System.out.println("sorry, no moneyprinting!");
+			withdrawAmount = 0;
+		} else if (withdrawAmount > accounts.get(accountNumber).getCurrentBalance()) {
+			System.out.println("Nice try, but we are credit sharks and not baitfishes!");
+			withdrawAmount = 0;
+		}
+		accounts.get(accountNumber).setCurrentBalance(balance - withdrawAmount);
+		System.out.println("Current balance is " + accounts.get(accountNumber).getCurrentBalance());
+		return true;
+	}
+
+	public static void transfer(double amount, int root, int goal) {
+		double balance = accounts.get(root).getCurrentBalance();
+		double balance2 = accounts.get(goal).getCurrentBalance();
+		if (amount < 0 || balance < amount) {
+			System.out.println("You went either below 0 with your account, or entered an invalid number.");
+			View.transferView();
+		}
+		if (withdrawForTrans(amount, root)) {
+			depositForTrans(amount, goal); // need to use bank account to call this method
+			System.out.println("Successfully transferred $" + amount + ". Your currenct balance is $"
+					+ accounts.get(root).getCurrentBalance());
+		}
+		View.customerView();
 	}
 }

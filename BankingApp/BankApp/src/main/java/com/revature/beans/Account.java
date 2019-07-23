@@ -11,17 +11,17 @@ public class Account {
 	// constructor, getter & setter, AND toString
 	HashMap<User, Boolean> userApproval = new HashMap<User, Boolean>();
 	final int accountNumber;
-	float CurrentBalance;
+	double currentBalance;
 	static int accountCount;
 
-	private Account(User user, float currentBalance, int accountNumber) {
+	private Account(User user, double currentBalance, int accountNumber) {
 		userApproval.put(user, false);
-		this.CurrentBalance = currentBalance;
+		this.currentBalance = currentBalance;
 		this.accountNumber = accountNumber;
 		accountCount++;
 	}
 
-	public Account(User user, float CurrentBalance) {
+	public Account(User user, double CurrentBalance) {
 		this(user, CurrentBalance, accountCount);
 	}
 
@@ -60,21 +60,21 @@ public class Account {
 		return userApproval.keySet();
 	}
 
-	public float getCurrentBalance() {
-		return CurrentBalance;
+	public double getCurrentBalance() {
+		return this.currentBalance ;
 	}
 
-	public void setCurrentBalance(float currentBalance) {
-		CurrentBalance = currentBalance;
+	public void setCurrentBalance(double currentBalance) {
+		this.currentBalance = currentBalance;
 	}
 
 	@Override
 	public String toString() {
 		try {
-			return "[Account Owner= " + userApproval.keySet().toArray()[0] + ", CurrentBalance= " + CurrentBalance
+			return "[Account Owner= " + userApproval.keySet().toArray()[0] + ", CurrentBalance= " + currentBalance
 					+ ", isJoint= " + (userApproval.size() > 1) + ", AccountIndex= " + this.accountNumber +"]";
 		} catch (Exception e) {
-			return  "CurrentBalance= " + CurrentBalance
+			return  "CurrentBalance= " + currentBalance
 					+  ", AccountIndex= " + this.accountNumber +"]";
 	
 		}

@@ -24,7 +24,7 @@ public class View {
 	public static void startView() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println(
-				"Welcome to the banking bash! To log in, enter -l, or to " + "register an account, enter -r \n\n");
+				"Welcome to kittycats banking bash!(^_^) \n To log in, enter -l, or to " + "register an account, enter -r \n\n");
 
 		input = sc.nextLine();
 		if (input.length() < 2 || input.charAt(0) != '-') {
@@ -87,7 +87,7 @@ public class View {
 			System.out.println("You cancelled the registration and are back at the start screen.");
 			startView();
 		}
-		if (MAXIMUMNAMELENGTH > input.length() || input.length() < MINIMUMNAMELENGTH) {
+		if (MAXIMUMNAMELENGTH < input.length() || input.length() < MINIMUMNAMELENGTH) {
 			System.out.println("Your name should consist of 3 to 10 characters. Please try again.");
 			registerView();
 		}
@@ -141,7 +141,7 @@ public class View {
 
 	public static void applicationsView() {
 		Scanner sc = new Scanner(System.in);
-		int intput =0;
+		int intput = 0;
 		System.out.println(
 				"Welcome to the application view. Here you can see pending applications for new accounts / joint accounts. \n To reject or accept one, type -r or -a. to cancel, type -c.");
 		for (Account account : Driver.getAccounts()) {
@@ -183,7 +183,8 @@ public class View {
 		case ('r'):
 			System.out.println("Which application do you want to reject? Enter the account number first.");
 			intput = sc.nextInt();
-			System.out.println(intput + " is being read correctly!" +  Driver.getAccountCount() + !Driver.getAccount(intput).checkApprovals());
+			System.out.println(intput + " is being read correctly!" + Driver.getAccountCount()
+					+ !Driver.getAccount(intput).checkApprovals());
 			if (intput <= Driver.getAccountCount() && Driver.getAccount(intput).checkApprovals()) {
 				sc = new Scanner(System.in);
 				System.out.println("Now tell me which user you want to reject here. Enter the Name, casesensitive.");
@@ -224,7 +225,7 @@ public class View {
 			employeeView();
 		}
 		System.out.println("Command not recognized - please enter -c to return!");
-		dataView();		
+		dataView();
 	}
 
 	public static void accountsView() {
@@ -253,13 +254,13 @@ public class View {
 		}
 		sc = new Scanner(System.in);
 		switch (input.charAt(1)) {
-		case ('d'):
+		case ('d'): depositView();
 			;
 			break;
-		case ('w'):
+		case ('w'): withdrawView();
 			;
 			break;
-		case ('t'):
+		case ('t'): transferView();
 			;
 			break;
 		case ('a'):
@@ -280,6 +281,7 @@ public class View {
 			customerView();
 			break;
 		}
+
 	}
 	/*
 	 * registerView customerView -logout (as logoutView?) -a(ccountView) accountView
@@ -292,8 +294,6 @@ public class View {
 	 * 
 	 * 
 	 */
-	
-	
 
 	public static int factorial(int n) {
 		if (n == 1) {
@@ -301,78 +301,162 @@ public class View {
 		}
 		return n * factorial(n - 1);
 	}
-	
-	
 
-	public static void depositView () {
+	public static void depositView() {
 		Scanner sc = new Scanner(System.in);
-		System.out.println(" Choose an account with which to make a deposit.");
-		input=sc.nextLine();
+		double intput = 0.00;
+		ArrayList<Account> accounts = Driver.getCurrentUserAccounts();
+		System.out.println("Available Accounts:");
+		for (Account account : accounts) {
+			if (account.isApproved(Driver.getCurrentUser())) {
+				System.out.println("Balance: " + account.getCurrentBalance() + ";  Name: " + account.getUsers()
+						+ "; Number: " + account.getAccountNumber());
+			}
+		}
+		System.out.println(
+				"Choose an account with which to make a deposit by entering the Number now. You may cancel with -c.");
+		try {
+			input = sc.nextLine();
+			if (input.equals("-c")) {
+				System.out.println("you returned to the main menu");
+				customerView();
+			} else {
+				intput = Integer.parseInt(input);
+			}
+		} catch (Exception e) {
+			System.out.println("please enter a number or -c");
+			withdrawView();
+		}
+		sc = new Scanner(System.in);
+		if (intput > Driver.getAccountCount()) {
+			System.out.println(
+					"You cannot enter a non assigned AccountIndex. Please stick to the rules! =)");
+			depositView();
+		}
+		int accountNumber = (int) intput;
+		System.out.println("How much would you like to deposit?");
+		try {
+			input = sc.nextLine();
+			if (input.equals("-c")) {
+				System.out.println("you returned to the main menu");
+				customerView();
+			} else {
+				intput = Double.parseDouble(input);
+			}
+		} catch (Exception e) {
+			System.out.println("please enter a number or -c");
+			depositView();
+		}
+		
+		Driver.deposit(intput, accountNumber);
+
+	}
+
+	public static void withdrawView() {
+		Scanner sc = new Scanner(System.in);
+		double intput = 0.00;
+		ArrayList<Account> accounts = Driver.getCurrentUserAccounts();
+		System.out.println("Available Accounts:");
+		for (Account account : accounts) {
+			if (account.isApproved(Driver.getCurrentUser())) {
+				System.out.println("Balance: " + account.getCurrentBalance() + ";  Name: " + account.getUsers()
+						+ "; Number: " + account.getAccountNumber());
+			}
+		}
+		System.out.println(
+				"Choose an account with which to make a withdraw by entering the Number now. You may cancel with -c.");
+		try {
+			input = sc.nextLine();
+			if (input.equals("-c")) {
+				System.out.println("you returned to the main menu");
+				customerView();
+			} else {
+				intput = Integer.parseInt(input);
+			}
+		} catch (Exception e) {
+			System.out.println("please enter a number or -c");
+			withdrawView();
+		}
+		sc = new Scanner(System.in);
+		if (intput > Driver.getAccountCount() || !Driver.getAccount((int) intput).isApproved(Driver.getCurrentUser())) {
+			System.out.println(
+					"You cannot enter a non assigned AccountIndex and also cannot work on another account. Please stick to the rules! =)");
+			depositView();
+		}
+		int accountNumber = (int) intput;
+		System.out.println("How much would you like to withdraw?");
+		try {
+			input = sc.nextLine();
+			if (input.equals("-c")) {
+				System.out.println("you returned to the main menu");
+				customerView();
+			} else {
+				intput = Double.parseDouble(input);
+			}
+		} catch (Exception e) {
+			System.out.println("please enter a number or -c");
+			depositView();
+		}
+		
+		Driver.withdraw(intput, accountNumber);
+	}
+
+	public static void transferView() {
+		Scanner sc = new Scanner(System.in);
+		double intput = 0.00;
+		ArrayList<Account> accounts = Driver.getCurrentUserAccounts();
+		System.out.println("Available Accounts:");
+		for (Account account : accounts) {
+			if (account.isApproved(Driver.getCurrentUser())) {
+				System.out.println("Balance: " + account.getCurrentBalance() + ";  Name: " + account.getUsers()
+						+ "; Number: " + account.getAccountNumber());
+			}
+		}
+		System.out.println(
+				"Choose an account from which to make a transfer by entering the Number now. You may cancel with -c.");
+		try {
+			input = sc.nextLine();
+			if (input.equals("-c")) {
+				System.out.println("you returned to the main menu");
+				customerView();
+			} else {
+				intput = Integer.parseInt(input);
+			}
+		} catch (Exception e) {
+			System.out.println("please enter a number or -c");
+			transferView();
+		}
+		sc = new Scanner(System.in);
+		if (intput > Driver.getAccountCount() || !Driver.getAccount((int) intput).isApproved(Driver.getCurrentUser())) {
+			System.out.println(
+					"You cannot enter a non assigned AccountIndex and also cannot work on another account. Please stick to the rules! =)");
+			transferView();
+		}
+		int rootAccountNumber = (int) intput; System.out.println(rootAccountNumber);
 		sc = new Scanner(System.in);
 		
-		
-		
-		
-		switch(input.charAt(1)) {
+		System.out.println("Where do you want to send money to? Enter a valid open account please.");
+		intput = sc.nextInt();
+		if(intput > Driver.getAccountCount()) {
+			System.out.println("too big of a number!");
+			transferView();
+		}
+		sc = new Scanner(System.in);
+		int goalAccountNumber = (int)intput;	System.out.println(goalAccountNumber);
+		System.out.println("How much would you like to transfer? Cancel with -c");
+		try {
+			input = sc.nextLine();
+			if (input.equals("-c")) {
+				System.out.println("you returned to the main menu");
+				customerView();
+			} else {
+				intput = Double.parseDouble(input);
+			}
+		} catch (Exception e) {
+			System.out.println("please enter a number or -c");
+			transferView();
+		}		System.out.println(intput + "method is called");
+		Driver.transfer(intput, rootAccountNumber, goalAccountNumber);
+	}
 
-		case('1'):
-			System.out.println("Choose a deposit amount");
-			Driver.deposit(sc.nextInt());
-			break;
-		case('2'):
-			System.out.println("Choose a deposit amount");
-			Driver.deposit(sc.nextInt());
-			break;
-		default:
-			System.out.println("Choose an account from the list >_<");
-			depositView();
-		
-		}
-		
-	}
-	
-	public static void withdrawView () {
-		Scanner sc = new Scanner(System.in);
-		System.out.println(" Choose an account with which to make a withdraw.");
-		input=sc.nextLine();
-		sc= new Scanner(System.in);
-		
-		switch(input.charAt(1)) {
-		case('1'):
-			Driver.withdraw(sc.nextDouble());
-			break;
-		case('2'):
-			Driver.withdraw(sc.nextDouble());
-			break;
-		default:
-			System.out.println("Choose an account from the list >_<");
-			withdrawView();
-		
-		}
-		
-	}
-	
-	public static void transferView () {
-		Scanner sc = new Scanner(System.in);
-		System.out.println(" Choose an account with which to make a transfer.");
-		input=sc.nextLine();
-		sc= new Scanner(System.in);
-		
-		switch(input.charAt(1)) {
-		case('1'):
-			Driver.transfer(sc.nextDouble());
-			break;
-		case('2'):
-			Driver.transfer(sc.nextDouble());
-			break;
-		default:
-			System.out.println("Choose an account from the list >_<");
-			withdrawView();
-		
-		}
-		
-	}
-	
-	
-	
 }
