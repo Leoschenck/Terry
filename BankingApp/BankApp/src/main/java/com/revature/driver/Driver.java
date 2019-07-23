@@ -153,4 +153,42 @@ public class Driver {
 	 * 
 	 * MainFunctions: Login, Register UserFunctions:
 	 */
+
+	public static double deposit(double x) {
+
+		double input = x;
+		double balance = 2000.00; // replace with a variable
+		double depositAmount = x;
+		double updateBalance = balance + depositAmount;
+		System.out.println("Current balance is " + updateBalance);
+		return updateBalance;
+	}
+
+	public static double withdraw(double x) {
+
+		double input = x;
+		double balance = 2000.00; // replace with a variable
+		double withdrawAmount = x;
+		double updateBalance = balance + withdrawAmount;
+		System.out.println("Current balance is " + updateBalance);
+		return updateBalance;
+	}
+
+	public static double transfer(double x) {
+		double input = x;
+		double balance = 2000.00;
+		double transferAmount = x;
+		double updateBalance = balance + transferAmount;
+		if (x <= balance) {
+			withdraw(x);
+			deposit(x); //need to use bank account to call this method
+			System.out.println("Successfully transferred $" + input + ". Your currenct balance is $" + updateBalance);
+			return updateBalance;
+
+		}
+		System.out.println(" Transfer failed, not enough balance. >_<" + "Your current balance is $" + balance);
+
+		return balance;
+
+	}
 }
