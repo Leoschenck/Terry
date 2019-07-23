@@ -2,6 +2,7 @@ package com.revature.driver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 import com.revature.beans.Account;
 import com.revature.beans.User;
@@ -20,6 +21,7 @@ public class Driver {
 		createMockUpData(); // later, this will read out our serialized files/file.
 		// System.out.println(View.factorial(5));
 		View.startView();
+		
 
 	}
 
@@ -85,4 +87,36 @@ public class Driver {
 	 * 	MainFunctions: Login, Register
 	 * 	UserFunctions: 
 	 */
+	
+	public static double deposit(int x) {
+		
+		double input = x;
+		double balance = 2000.00; //replace with a variable
+		double depositAmount= x; 
+		double updateBalance= balance+depositAmount;
+		System.out.println("Current balance is " + updateBalance);
+		return updateBalance;
+	}
+	
+	
+	
+	public static double withdraw(int x) {
+		
+		double input = x;
+		double balance = 2000.00; //replace with a variable
+		double withdrawAmount= x; 
+		double updateBalance= balance+withdrawAmount;
+		System.out.println("Current balance is " + updateBalance);
+		return updateBalance;
+	}
+	
+	public static double transfer(int x) {
+		double input= x;
+		double balance= 2000.00;
+		double transferAmount= x;
+		double updateBalance=balance+transferAmount;
+		System.out.println("Current balance is "+ updateBalance);
+		return updateBalance;
+				
+	}
 }

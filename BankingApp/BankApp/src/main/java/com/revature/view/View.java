@@ -120,6 +120,8 @@ public class View {
 	 * 
 	 * 
 	 */
+	
+	
 
 	public static int factorial(int n) {
 		if (n == 1) {
@@ -127,4 +129,78 @@ public class View {
 		}
 		return n * factorial(n - 1);
 	}
+	
+	
+
+	public static void depositView () {
+		Scanner sc = new Scanner(System.in);
+		System.out.println(" Choose an account with which to make a deposit.");
+		input=sc.nextLine();
+		sc = new Scanner(System.in);
+		
+		
+		
+		
+		switch(input.charAt(1)) {
+
+		case('1'):
+			System.out.println("Choose a deposit amount");
+			Driver.deposit(sc.nextInt());
+			break;
+		case('2'):
+			System.out.println("Choose a deposit amount");
+			Driver.deposit(sc.nextInt());
+			break;
+		default:
+			System.out.println("Choose an account from the list >_<");
+			depositView();
+		
+		}
+		
+	}
+	
+	public static void withdrawView () {
+		Scanner sc = new Scanner(System.in);
+		System.out.println(" Choose an account with which to make a withdraw.");
+		input=sc.nextLine();
+		sc= new Scanner(System.in);
+		
+		switch(input.charAt(1)) {
+		case('1'):
+			Driver.withdraw(sc.nextInt());
+			break;
+		case('2'):
+			Driver.withdraw(sc.nextInt());
+			break;
+		default:
+			System.out.println("Choose an account from the list >_<");
+			withdrawView();
+		
+		}
+		
+	}
+	
+	public static void transferView () {
+		Scanner sc = new Scanner(System.in);
+		System.out.println(" Choose an account with which to make a transfer.");
+		input=sc.nextLine();
+		sc= new Scanner(System.in);
+		
+		switch(input.charAt(1)) {
+		case('1'):
+			Driver.transfer(sc.nextInt());
+			break;
+		case('2'):
+			Driver.transfer(sc.nextInt());
+			break;
+		default:
+			System.out.println("Choose an account from the list >_<");
+			withdrawView();
+		
+		}
+		
+	}
+	
+	
+	
 }

@@ -71,4 +71,7 @@ public class User implements Serializable {
 		this.role = role;
 	}
 
+	
+	
+	
 }
