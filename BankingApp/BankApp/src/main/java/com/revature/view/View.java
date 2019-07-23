@@ -61,7 +61,7 @@ public class View {
 			loginView();
 		}
 		String userName = input;
-		System.out.println("please now gief password or cancel with -c");
+		System.out.println("please now give password or cancel with -c");
 		sc = new Scanner(System.in);
 		input = sc.nextLine();
 		if (input.equals("-c")) {

@@ -1,11 +1,10 @@
 package com.revature.beans;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
 
-import com.revature.driver.Driver;
-
-public class Account {
+public class Account implements Serializable{
 
 	// acc has ArrayList<User>, current balance, boolean isJoint, boolean isApproved
 	// constructor, getter & setter, AND toString
