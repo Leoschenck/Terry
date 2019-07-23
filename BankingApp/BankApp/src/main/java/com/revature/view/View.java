@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.revature.beans.Account;
+import com.revature.beans.User;
 import com.revature.driver.Driver;
 
 /*
@@ -17,7 +18,7 @@ import com.revature.driver.Driver;
 public class View {
 	static String input = "";
 	static final int MINIMUMNAMELENGTH = 3;
-	static final int MAXIMUMNAMELENGTH = 3;
+	static final int MAXIMUMNAMELENGTH = 10;
 	static final int MINIMUMPASSLENGTH = 3;
 
 	public static void startView() {
@@ -64,10 +65,12 @@ public class View {
 		sc = new Scanner(System.in);
 		input = sc.nextLine();
 		if (input.equals("-c")) {
-			System.out.println("You cancelled the login and are back at the start screen.");  // extract that method? ("login", redirectViewIndex)
+			System.out.println("You cancelled the login and are back at the start screen."); // extract that method?
+																								// ("login",
+																								// redirectViewIndex)
 			startView();
 		}
-		if(input.length() < MINIMUMPASSLENGTH) {
+		if (input.length() < MINIMUMPASSLENGTH) {
 			System.out.println("Too short of a password - please try again!");
 			loginView();
 		}
@@ -84,19 +87,20 @@ public class View {
 			System.out.println("You cancelled the registration and are back at the start screen.");
 			startView();
 		}
-		if (MAXIMUMNAMELENGTH > input.length() && input.length() < MINIMUMNAMELENGTH) {
+		if (MAXIMUMNAMELENGTH > input.length() || input.length() < MINIMUMNAMELENGTH) {
 			System.out.println("Your name should consist of 3 to 10 characters. Please try again.");
 			registerView();
 		}
 		String userName = input;
-		System.out.println("Now please enter a strong password with at least 3 characters. enter -c to return to the main menu");
+		System.out.println(
+				"Now please enter a strong password with at least 3 characters. enter -c to return to the main menu");
 		sc = new Scanner(System.in);
 		input = sc.nextLine();
 		if (input.equals("-c")) {
 			System.out.println("You cancelled the registration and are back at the start screen.");
 			startView();
 		}
-		if(input.length()<MINIMUMPASSLENGTH) {
+		if (input.length() < MINIMUMPASSLENGTH) {
 			System.out.println("Password should be longer! Please enter more than 3 letters.");
 			registerView();
 		}
@@ -104,9 +108,177 @@ public class View {
 		Driver.registerUser(userName, password);
 	}
 
-	public static void applicationView(ArrayList<Account> accounts) {
+	public static void customerView() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Welcome, " + Driver.getCurrentUserName()
+				+ "! You are in your main menu. If you wish to display your accounts to make withdraws, "
+				+ "deposits, transfers, or apply for a new account, please enter -a. To log out, enter -logout ");
+		input = sc.nextLine();
+		if (input.equals("-logout")) {
+			Driver.logout();
+		}
+		if (input.equals("-a")) {
+			accountsView();
+		}
+	}
+
+	public static void employeeView() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Welcome, " + Driver.getCurrentUserName()
+				+ "! You are in your main menu. If you wish to display the open applications to make reject or deny those, enter -a."
+				+ "To display all data, please enter -d. To log out, enter -logout.");
+		input = sc.nextLine();
+		if (input.equals("-logout")) {
+			Driver.logout();
+		}
+		if (input.equals("-a")) {
+			applicationsView();
+		}
+		if (input.equals("-d")) {
+			dataView();
+		}
+	}
+
+	public static void applicationsView() {
+		Scanner sc = new Scanner(System.in);
+		int intput =0;
+		System.out.println(
+				"Welcome to the application view. Here you can see pending applications for new accounts / joint accounts. \n To reject or accept one, type -r or -a. to cancel, type -c.");
+		for (Account account : Driver.getAccounts()) {
+			if (account.checkApprovals()) {
+				System.out.println(account);
+			}
+		}
+		input = sc.nextLine();
+		if (input.length() != 2 || input.charAt(0) != '-') {
+			System.out.println("Enter -r, -a, or -c next time, so your command can be understood.");
+			applicationsView();
+		}
+		sc = new Scanner(System.in);
+		switch (input.charAt(1)) {
+		case ('c'):
+			System.out.println("you cancelled. Back to your main menu!");
+			employeeView();
+			break;
+		case ('a'):
+			System.out.println("Which application do you want to accept? Enter the account number first.");
+			intput = sc.nextInt();
+			if (intput <= Driver.getAccountCount() && Driver.getAccount(intput).checkApprovals()) {
+				sc = new Scanner(System.in);
+				System.out.println("Now tell me which user you want to accept here. Enter the Name, casesensitive.");
+				input = sc.nextLine();
+				try {
+					if (!Driver.getAccount(intput).isApproved(Driver.findUser(input))) {
+						Driver.acceptApplication(intput, Driver.findUser(input));
+						break;
+					}
+				} catch (Exception e) {
+					System.out.println("Wrong values were given, you are now logged out!");
+					Driver.logout();
+				}
+			}
+			System.out.println("you may have chosen a wrong number there, try again!");
+			applicationsView();
+			break;
+		case ('r'):
+			System.out.println("Which application do you want to reject? Enter the account number first.");
+			intput = sc.nextInt();
+			System.out.println(intput + " is being read correctly!" +  Driver.getAccountCount() + !Driver.getAccount(intput).checkApprovals());
+			if (intput <= Driver.getAccountCount() && Driver.getAccount(intput).checkApprovals()) {
+				sc = new Scanner(System.in);
+				System.out.println("Now tell me which user you want to reject here. Enter the Name, casesensitive.");
+				input = sc.nextLine();
+				try {
+					if (!Driver.getAccount(intput).isApproved(Driver.findUser(input))) {
+						Driver.rejectApplication(intput, Driver.findUser(input));
+						break;
+					}
+				} catch (Exception e) {
+					System.out.println("Wrong values were given, you are now logged out!");
+					Driver.logout();
+				}
+			}
+			System.out.println("you may have chosen a wrong number there, try again!");
+			applicationsView();
+			break;
+		}
+		dataView();
+	}
+
+	public static void dataView() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println(
+				"Welcome, " + Driver.getCurrentUserName() + "! You are in your data menu. To return, enter -c.;");
+		if (Driver.isAdmin()) {
+			System.out.println("To make changes, enter -e.");
+		}
+		for (Account account : Driver.getAccounts()) {
+			System.out.println(account);
+		}
+		for (User user : Driver.getUsers()) {
+			System.out.println(user);
+		}
+		input = sc.nextLine();
+		if (input.equals("-c")) {
+			System.out.println("You saw enough of the Data and returned to your main menu");
+			employeeView();
+		}
+		System.out.println("Command not recognized - please enter -c to return!");
+		dataView();		
+	}
+
+	public static void accountsView() {
+		Scanner sc = new Scanner(System.in);
+		ArrayList<Account> accounts = Driver.getCurrentUserAccounts();
+		System.out.println("Available Accounts:");
 		for (Account account : accounts) {
-			System.out.println("Name: " + account.getUser());
+			if (account.isApproved(Driver.getCurrentUser())) {
+				System.out.println("Balance: " + account.getCurrentBalance() + ";  Name: " + account.getUsers());
+			}
+		}
+		System.out.println("Pending Accounts:");
+		for (Account account : accounts) {
+			if (!account.isApproved(Driver.getCurrentUser())) {
+				System.out.println("Name: " + account.getUsers() + "AccountID: " + account.getAccountNumber()
+						+ "Accepted yet: false.");
+			}
+		}
+		System.out.println(
+				"To deposit, withdraw, or transfer of one of your accounts, please enter -d,-w, or -t respectively. "
+						+ "To apply for a new account, enter -a and to return to the previous menu, enter -c");
+		input = sc.nextLine();
+		if (input.length() != 2 || input.charAt(0) != '-') {
+			System.out.println("Enter -d, -w, -t, or -c next time, so your command can be understood.");
+			accountsView();
+		}
+		sc = new Scanner(System.in);
+		switch (input.charAt(1)) {
+		case ('d'):
+			;
+			break;
+		case ('w'):
+			;
+			break;
+		case ('t'):
+			;
+			break;
+		case ('a'):
+			System.out.println("Enter a Number higher than " + Driver.getAccountCount() + " to create a new account,"
+					+ " or enter a lower number to apply for a joint account.");
+			int intput = 0;
+
+			try {
+				intput = sc.nextInt();
+			} catch (Exception e) {
+				System.out.println("Something went wrong. Enter a Number next time!");
+				accountsView();
+			}
+			Driver.createBankAccount(intput);
+			break;
+		case ('c'):
+			System.out.println("Back to your main menu!");
+			customerView();
+			break;
 		}
 	}
 	/*

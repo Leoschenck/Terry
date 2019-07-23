@@ -2,6 +2,8 @@ package com.revature.driver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 
 import com.revature.beans.Account;
 import com.revature.beans.User;
@@ -9,8 +11,9 @@ import com.revature.view.View;
 
 public class Driver {
 	static ArrayList<Account> applications = new ArrayList<Account>();
-	static ArrayList<Account> accounts = new ArrayList<Account>();
+	static HashMap<Integer, Account> accounts = new HashMap<Integer, Account>();
 	static ArrayList<User> users = new ArrayList<User>();
+	private static User currentlyLoggedInUser = null;
 
 	// methods to checkPassword for a user who tried to login, to
 	// withdraw,transfer,deposit (maybe
@@ -20,7 +23,74 @@ public class Driver {
 		createMockUpData(); // later, this will read out our serialized files/file.
 		// System.out.println(View.factorial(5));
 		View.startView();
+	}
 
+	public static void logout() {
+		currentlyLoggedInUser = null;
+		System.out.println("You logged out. Cya~~~ :3");
+		View.startView();
+	}
+
+	public static void createBankAccount(int input) {
+		if (input >= Account.getAccountCount()) {
+			Account newAcc = new Account(currentlyLoggedInUser);
+			accounts.put(newAcc.getAccountNumber(), newAcc);
+			System.out.println(
+					"Your Account application was submitted and if accepted, you'll be able to deposit money on it!");
+			View.accountsView();
+		}else if(input < Account.getAccountCount()) {
+		System.out.println("You applied for a Joint Account with " + accounts.get(input).getUsers().toArray()[0] + ".");
+		accounts.get(input).addUser(currentlyLoggedInUser);
+		View.accountsView();
+		}
+	}
+
+	public static ArrayList<Account> getCurrentUserAccounts() {
+		ArrayList<Account> userAccounts = new ArrayList<Account>();
+		for (Account account : accounts.values()) {
+			if (account.getUsers().contains(currentlyLoggedInUser)) {
+				userAccounts.add(account);
+			}
+		}
+		return userAccounts;
+	}
+	public static void acceptApplication(int input, User user) {
+		accounts.get(input).setApproval(user);
+	}
+	public static void rejectApplication(int input, User user) {
+		accounts.get(input).rejectApplication(user);
+	}
+	public static User findUser(String name) {
+		for(User user : users) {
+			if(user.getName().equals(name)) {
+				return user;
+			}
+		}
+		return null;
+	}
+	public static String getCurrentUserName() {
+		if (currentlyLoggedInUser == null)
+			return "";
+		return currentlyLoggedInUser.getName();
+	}
+
+	public static User getCurrentUser() {
+		if (currentlyLoggedInUser == null)
+			return null;
+		return currentlyLoggedInUser;
+	}
+
+	public static int getAccountCount() {
+		return Account.getAccountCount();
+	}
+	public static ArrayList<User> getUsers(){
+		return users;
+	}
+	public static Account getAccount(int x) {
+		return accounts.get(x);
+	}
+	public static Collection<Account> getAccounts(){
+		return accounts.values();
 	}
 
 	public static void loginUser(String userName, String password) {
@@ -28,7 +98,11 @@ public class Driver {
 			if (userName.equals(user.getName())) {
 				if (password.equals(user.getPassword())) {
 					System.out.println("hurray! " + user.getName() + ", u totally just logged in! Ameowzing. :3");
-					View.startView();
+					currentlyLoggedInUser = user;
+					if (user.getRole() == 0)
+						View.customerView();
+					if (user.getRole()==1)
+						View.employeeView();
 				}
 				System.out.println(
 						"Your password did not match, if you forgot your pasword, please contact a system-admin, or register from the main menu!");
@@ -40,10 +114,8 @@ public class Driver {
 		View.loginView();
 
 	}
-
-	public static void getApplicationView() {
-		// collect all applications here
-		View.applicationView(applications);
+	public static boolean isAdmin() {
+		return (currentlyLoggedInUser.getRole()==2);
 	}
 
 	public static void registerUser(String userName, String password) {
@@ -66,23 +138,19 @@ public class Driver {
 		User leo = new User("Leo", "doggobark", 0);
 		User mett = new User("Matt", "RollTide", 1);
 		User bASTET = new User("BASTET", "lifat almada", 2);
-		
+
 		User[] userArray = new User[] { terry, leo, mett, bASTET };
 		users.addAll(Arrays.asList(userArray));
 	}
 	/*
-	 * registerView 
-	 * customerView -logout (as logoutView?) -a(ccountView) 
-	 * accountView
-	 * -w,d,t -a(pply) -logout 
-	 * employeeView -logout -a(pplicationView) -c(ustomerInfo) 
-	 * applicationView -a(ccept)/d(eny) -c 
-	 * adminView -logout -a(pplicationView) -c(ustomerInfo for admins) 
-	 * customerOverView(bool isAdmin for interactability) -c -e(dit: inputs would be: username as 
-	 * unique key to find user, then 0/1/2/3 for which variable, then new value; -c to cancel, still check for same name,
-	 * length,...)
+	 * registerView customerView -logout (as logoutView?) -a(ccountView) accountView
+	 * -w,d,t -a(pply) -logout employeeView -logout -a(pplicationView)
+	 * -c(ustomerInfo) applicationView -a(ccept)/d(eny) -c adminView -logout
+	 * -a(pplicationView) -c(ustomerInfo for admins) customerOverView(bool isAdmin
+	 * for interactability) -c -e(dit: inputs would be: username as unique key to
+	 * find user, then 0/1/2/3 for which variable, then new value; -c to cancel,
+	 * still check for same name, length,...)
 	 * 
-	 * 	MainFunctions: Login, Register
-	 * 	UserFunctions: 
+	 * MainFunctions: Login, Register UserFunctions:
 	 */
 }

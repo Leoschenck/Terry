@@ -9,22 +9,17 @@ public class User implements Serializable {
 	// role,
 	// constructors, getter setters, tostring
 	String name;
-	ArrayList<Account> accounts;
 	String password;
 	int role;
 
-	public User(String name, ArrayList<Account> accounts, String password, int role) {
+	public User(String name, String password, int role) {
 		this.name = name;
-		this.accounts = accounts;
 		this.password = password;
 		this.role = role;
 	}
 
-	public User(String name, String password, int role) {
-		this(name, null, password, role);
-	}
 	public User(String name, String password) {
-		this(name, null, password, 0);
+		this(name, password, 0);
 	}
 
 	@Override
@@ -36,7 +31,7 @@ public class User implements Serializable {
 		case(2): roleString = "cAtmin" ;break;
 
 		}
-		return "User [name=" + name + ", accounts=" + accounts + ", password=" + password + ", role= " + roleString + "]";
+		return "User [name=" + name + ", password=" + password + ", role= " + roleString + "]";
 	}
 
 	public String getName() {
@@ -45,14 +40,6 @@ public class User implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public ArrayList<Account> getAccounts() {
-		return accounts;
-	}
-
-	public void setAccounts(ArrayList<Account> accounts) {
-		this.accounts = accounts;
 	}
 
 	public String getPassword() {

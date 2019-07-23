@@ -1,29 +1,63 @@
 package com.revature.beans;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+
+import com.revature.driver.Driver;
 
 public class Account {
 
 	// acc has ArrayList<User>, current balance, boolean isJoint, boolean isApproved
 	// constructor, getter & setter, AND toString
-	ArrayList<User> User;
+	HashMap<User, Boolean> userApproval = new HashMap<User, Boolean>();
+	final int accountNumber;
 	float CurrentBalance;
-	boolean isJoint;
-	boolean isApproved;
+	static int accountCount;
 
-	public Account(ArrayList<User> User, float CurrentBalance, boolean isJoint, boolean isApproved) {
-		this.User = User;
-		this.CurrentBalance = CurrentBalance;
-		this.isJoint = isJoint;
-		this.isApproved = isApproved;
+	private Account(User user, float currentBalance, int accountNumber) {
+		userApproval.put(user, false);
+		this.CurrentBalance = currentBalance;
+		this.accountNumber = accountNumber;
+		accountCount++;
 	}
 
-	public ArrayList<User> getUser() {
-		return User;
+	public Account(User user, float CurrentBalance) {
+		this(user, CurrentBalance, accountCount);
 	}
 
-	public void setUser(ArrayList<User> user) {
-		User = user;
+	public Account(User user) {
+		this(user, 0);
+	}
+	public void addUser(User user) {
+		userApproval.put(user, false);
+	}
+	public static int getAccountCount() {
+		return accountCount;
+	}
+	
+	
+	public void setApproval(User user) {
+		userApproval.replace(user, true);
+	}
+	
+	public void rejectApplication(User user) {
+		userApproval.remove(user);
+	}
+	
+	public boolean checkApprovals() {
+		return userApproval.containsValue(false);
+	}
+
+	public int getAccountNumber() {
+		return accountNumber;
+	}
+
+	public boolean isApproved(User user) {
+		return userApproval.get(user);
+	}
+
+	public Set<User> getUsers() {
+		return userApproval.keySet();
 	}
 
 	public float getCurrentBalance() {
@@ -34,26 +68,16 @@ public class Account {
 		CurrentBalance = currentBalance;
 	}
 
-	public boolean isJoint() {
-		return isJoint;
-	}
-
-	public void setJoint(boolean isJoint) {
-		this.isJoint = isJoint;
-	}
-
-	public boolean isApproved() {
-		return isApproved;
-	}
-
-	public void setApproved(boolean isApproved) {
-		this.isApproved = isApproved;
-	}
-
 	@Override
 	public String toString() {
-		return "Account [User=" + User + ", CurrentBalance=" + CurrentBalance + 
-				", isJoint=" + isJoint;
+		try {
+			return "[Account Owner= " + userApproval.keySet().toArray()[0] + ", CurrentBalance= " + CurrentBalance
+					+ ", isJoint= " + (userApproval.size() > 1) + ", AccountIndex= " + this.accountNumber +"]";
+		} catch (Exception e) {
+			return  "CurrentBalance= " + CurrentBalance
+					+  ", AccountIndex= " + this.accountNumber +"]";
+	
+		}
 
 	}
 
