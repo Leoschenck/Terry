@@ -120,6 +120,7 @@ public class View {
 		if (input.equals("-a")) {
 			accountsView();
 		}
+		customerView();
 	}
 
 	public static void employeeView() {
@@ -137,6 +138,7 @@ public class View {
 		if (input.equals("-d")) {
 			dataView();
 		}
+		employeeView();
 	}
 
 	public static void applicationsView() {

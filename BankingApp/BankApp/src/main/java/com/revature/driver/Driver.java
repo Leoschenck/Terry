@@ -113,7 +113,7 @@ public class Driver {
 						View.employeeView();
 				}
 				System.out.println(
-						"Your password did not match, if you forgot your pasword, please contact a system-admin, or register from the main menu!");
+						"Your password did not match, if you forgot your password, please contact a system-admin, or register from the main menu!");
 				View.loginView();
 			}
 		}
