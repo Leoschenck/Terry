@@ -21,7 +21,6 @@ public class Driver {
 		createMockUpData(); // later, this will read out our serialized files/file.
 		// System.out.println(View.factorial(5));
 		View.startView();
-		
 
 	}
 
@@ -68,55 +67,57 @@ public class Driver {
 		User leo = new User("Leo", "doggobark", 0);
 		User mett = new User("Matt", "RollTide", 1);
 		User bASTET = new User("BASTET", "lifat almada", 2);
-		
+
 		User[] userArray = new User[] { terry, leo, mett, bASTET };
 		users.addAll(Arrays.asList(userArray));
 	}
 	/*
-	 * registerView 
-	 * customerView -logout (as logoutView?) -a(ccountView) 
-	 * accountView
-	 * -w,d,t -a(pply) -logout 
-	 * employeeView -logout -a(pplicationView) -c(ustomerInfo) 
-	 * applicationView -a(ccept)/d(eny) -c 
-	 * adminView -logout -a(pplicationView) -c(ustomerInfo for admins) 
-	 * customerOverView(bool isAdmin for interactability) -c -e(dit: inputs would be: username as 
-	 * unique key to find user, then 0/1/2/3 for which variable, then new value; -c to cancel, still check for same name,
-	 * length,...)
+	 * registerView customerView -logout (as logoutView?) -a(ccountView) accountView
+	 * -w,d,t -a(pply) -logout employeeView -logout -a(pplicationView)
+	 * -c(ustomerInfo) applicationView -a(ccept)/d(eny) -c adminView -logout
+	 * -a(pplicationView) -c(ustomerInfo for admins) customerOverView(bool isAdmin
+	 * for interactability) -c -e(dit: inputs would be: username as unique key to
+	 * find user, then 0/1/2/3 for which variable, then new value; -c to cancel,
+	 * still check for same name, length,...)
 	 * 
-	 * 	MainFunctions: Login, Register
-	 * 	UserFunctions: 
+	 * MainFunctions: Login, Register UserFunctions:
 	 */
-	
-	public static double deposit(int x) {
-		
+
+	public static double deposit(double x) {
+
 		double input = x;
-		double balance = 2000.00; //replace with a variable
-		double depositAmount= x; 
-		double updateBalance= balance+depositAmount;
+		double balance = 2000.00; // replace with a variable
+		double depositAmount = x;
+		double updateBalance = balance + depositAmount;
 		System.out.println("Current balance is " + updateBalance);
 		return updateBalance;
 	}
-	
-	
-	
-	public static double withdraw(int x) {
-		
+
+	public static double withdraw(double x) {
+
 		double input = x;
-		double balance = 2000.00; //replace with a variable
-		double withdrawAmount= x; 
-		double updateBalance= balance+withdrawAmount;
+		double balance = 2000.00; // replace with a variable
+		double withdrawAmount = x;
+		double updateBalance = balance + withdrawAmount;
 		System.out.println("Current balance is " + updateBalance);
 		return updateBalance;
 	}
-	
-	public static double transfer(int x) {
-		double input= x;
-		double balance= 2000.00;
-		double transferAmount= x;
-		double updateBalance=balance+transferAmount;
-		System.out.println("Current balance is "+ updateBalance);
-		return updateBalance;
-				
+
+	public static double transfer(double x) {
+		double input = x;
+		double balance = 2000.00;
+		double transferAmount = x;
+		double updateBalance = balance + transferAmount;
+		if (x <= balance) {
+			withdraw(x);
+			deposit(x); //need to use bank account to call this method
+			System.out.println("Successfully transferred $" + input + ". Your currenct balance is $" + updateBalance);
+			return updateBalance;
+
+		}
+		System.out.println(" Transfer failed, not enough balance. >_<" + "Your current balance is $" + balance);
+
+		return balance;
+
 	}
 }

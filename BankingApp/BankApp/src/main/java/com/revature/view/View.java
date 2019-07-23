@@ -167,10 +167,10 @@ public class View {
 		
 		switch(input.charAt(1)) {
 		case('1'):
-			Driver.withdraw(sc.nextInt());
+			Driver.withdraw(sc.nextDouble());
 			break;
 		case('2'):
-			Driver.withdraw(sc.nextInt());
+			Driver.withdraw(sc.nextDouble());
 			break;
 		default:
 			System.out.println("Choose an account from the list >_<");
@@ -188,10 +188,10 @@ public class View {
 		
 		switch(input.charAt(1)) {
 		case('1'):
-			Driver.transfer(sc.nextInt());
+			Driver.transfer(sc.nextDouble());
 			break;
 		case('2'):
-			Driver.transfer(sc.nextInt());
+			Driver.transfer(sc.nextDouble());
 			break;
 		default:
 			System.out.println("Choose an account from the list >_<");
