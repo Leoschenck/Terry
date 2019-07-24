@@ -1,5 +1,9 @@
 package com.revature.view;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -21,11 +25,61 @@ public class View {
 	static final int MAXIMUMNAMELENGTH = 10;
 	static final int MINIMUMPASSLENGTH = 3;
 
+	public static void catReader() {
+		String path = "src/main/resources/lazyCat.txt";
+		FileInputStream is = null;
+		StringBuilder sb= new StringBuilder();
+		int b = 0;
+		try {
+			File file = new File(path);
+			is = new FileInputStream(file);
+			while ((b = is.read()) != -1) {
+				char c = (char) b;
+					sb.append(c);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			System.out.println(sb);
+	}
+
 	public static void startView() {
 		Scanner sc = new Scanner(System.in);
-		System.out.println(
-				"Welcome to kittycats banking bash!(^_^) \n To log in, enter -l, or to " + "register an account, enter -r \n\n");
 
+		String cat1 = ":~-._                                                  _.-~:";
+		String cat2 = ": :.~^o._        ________---------________        _.o^~.:.:";
+		String cat3 = ": ::.`?88booo~~~.::::::::...::::::::::::..~~oood88P'.::.:";
+		String cat4 = ":  ::: `?88P .:::....         ........:::::. ?88P' :::. :";
+		String cat5 = " :  :::. `? .::......      . ...........:::. P' .:::. :";
+		String cat6 = "   :  :::  .... .......       .. .::::......::.   :::. :";
+		String cat7 = "   `  :' .... .. ..:::::.     . ..:::::::....:::.  `: .'";
+		String cat8 = "   ' :..    ____:::::::::.  . . ....:::::::::____  ... :";
+		String cat9 = "    :... `:~    ^~-:::::..  .........:::::-~^    ~::.::::";
+		String cat10 = "    `.::. `|   ($) \b:::::..::.:.:::::::d/  ($)   /'.::::'";
+		String cat11 = "     ::::.  ~-._v    |b.::::::::::::::d|    v_.-~..:::::";
+		String cat12 = "    `.:::::... ~~^?888b..:::::::::::d888P^~...::::::::'";
+		String cat13 = "     `.::::::::::....~~~ .:::::::::~~~:::::::::::::::'";
+		String cat14 = "     `..:::::::::::   .   ....::::    ::::::::::::,'";
+		String cat15 = "        `. .:::::::    .    .::::::.    "
+				+ "::::::::'.'";
+		String cat16 = "         `._ .:::    .       .:::::.    :::::_.'";
+		String cat17 = "            `-. :    .       .:::::      :,-'";
+		String cat18 = "               :.   :___     .:::___   .::";
+		String cat19 = "     ..--~~~~--:+::. ~~^?b..:::dP^~~.::++:--~~~~--..";
+		String cat20 = "       ___....--`+:::.    `~8~'    .:::+'--....___";
+		String cat21 = "       ~~   __..---`_=:: ___gd8bg___ :==_'---..__   ~~";
+		String cat22 = "      -~~~  _.--~~`-.~~~~~~~~~~~~~~~,-' ~~--._ ~~~-";
+		String cat23 = "         -~~            ~~~~~~~~~   _ ___ _  ~~-";
+		String[] meanCat = new String[] { cat1, cat2, cat3, cat4, cat5, cat6, cat7, cat8, cat9, cat10, cat11, cat12,
+				cat13, cat14, cat15, cat16, cat17, cat18, cat19, cat20, cat21, cat22, cat23 };
+		for (String cat : meanCat) {
+			System.out.println(cat);
+		}
+		System.out.println("Welcome to kittycats banking bash!(^_^) \n To log in, enter -l, or to "
+				+ "register an account, enter -r \n\n");
 		input = sc.nextLine();
 		if (input.length() < 2 || input.charAt(0) != '-') {
 			System.out.println("Choose -r or -l   (^_^)");
@@ -256,13 +310,16 @@ public class View {
 		}
 		sc = new Scanner(System.in);
 		switch (input.charAt(1)) {
-		case ('d'): depositView();
+		case ('d'):
+			depositView();
 			;
 			break;
-		case ('w'): withdrawView();
+		case ('w'):
+			withdrawView();
 			;
 			break;
-		case ('t'): transferView();
+		case ('t'):
+			transferView();
 			;
 			break;
 		case ('a'):
@@ -331,8 +388,7 @@ public class View {
 		}
 		sc = new Scanner(System.in);
 		if (intput > Driver.getAccountCount()) {
-			System.out.println(
-					"You cannot enter a non assigned AccountIndex. Please stick to the rules! =)");
+			System.out.println("You cannot enter a non assigned AccountIndex. Please stick to the rules! =)");
 			depositView();
 		}
 		int accountNumber = (int) intput;
@@ -349,7 +405,7 @@ public class View {
 			System.out.println("please enter a number or -c");
 			depositView();
 		}
-		
+
 		Driver.deposit(intput, accountNumber);
 
 	}
@@ -399,7 +455,7 @@ public class View {
 			System.out.println("please enter a number or -c");
 			depositView();
 		}
-		
+
 		Driver.withdraw(intput, accountNumber);
 	}
 
@@ -434,17 +490,19 @@ public class View {
 					"You cannot enter a non assigned AccountIndex and also cannot work on another account. Please stick to the rules! =)");
 			transferView();
 		}
-		int rootAccountNumber = (int) intput; System.out.println(rootAccountNumber);
+		int rootAccountNumber = (int) intput;
+		System.out.println(rootAccountNumber);
 		sc = new Scanner(System.in);
-		
+
 		System.out.println("Where do you want to send money to? Enter a valid open account please.");
 		intput = sc.nextInt();
-		if(intput > Driver.getAccountCount()) {
+		if (intput > Driver.getAccountCount()) {
 			System.out.println("too big of a number!");
 			transferView();
 		}
 		sc = new Scanner(System.in);
-		int goalAccountNumber = (int)intput;	System.out.println(goalAccountNumber);
+		int goalAccountNumber = (int) intput;
+		System.out.println(goalAccountNumber);
 		System.out.println("How much would you like to transfer? Cancel with -c");
 		try {
 			input = sc.nextLine();
@@ -457,7 +515,8 @@ public class View {
 		} catch (Exception e) {
 			System.out.println("please enter a number or -c");
 			transferView();
-		}		System.out.println(intput + "method is called");
+		}
+		System.out.println(intput + "method is called");
 		Driver.transfer(intput, rootAccountNumber, goalAccountNumber);
 	}
 

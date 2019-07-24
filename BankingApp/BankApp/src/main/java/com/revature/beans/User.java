@@ -8,7 +8,7 @@ public class User implements Serializable {
 	// person has String name, ArrayList<Account> accounts, String password, int
 	// role,
 	// constructors, getter setters, tostring
-	String name;
+	private String name;
 	String password;
 	int role;
 

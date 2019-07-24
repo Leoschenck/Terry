@@ -22,6 +22,7 @@ public class Driver {
 		// redirects into view;
 		createMockUpData(); // later, this will read out our serialized files/file.
 		// System.out.println(View.factorial(5));
+		View.catReader();
 		View.startView();
 	}
 
